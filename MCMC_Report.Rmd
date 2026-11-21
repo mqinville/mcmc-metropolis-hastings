@@ -1,0 +1,104 @@
+---
+title: "The Metropolis-Hastings Algorithm: A Simulation Study and an Application to Ontario Water-Quality Data"
+author:
+  - name: Félix Mainville
+    email: fmainvil@uoguelph.ca
+    affiliation: University of Guelph
+  - name: Matthew Kai Kai
+    email: mkaikai@uoguelph.ca
+    affiliation: University of Guelph
+journal: "STAT*4000 Statistical Computing, Fall 2026"
+date: "`r Sys.Date()`"
+classoption: preprint, 3p, authoryear
+linenumbers: false
+numbersections: true
+output: 
+  rticles::elsevier_article:
+    keep_tex: false
+abstract: |
+  Write the abstract here (3-5 sentences) summarizing the project: the Metropolis-Hastings algorithm, the simulation study on known target distributions (normal, gamma, lognormal), the application to Ontario PWQMN water-quality data, and the main findings.
+header-includes:
+  - \linespread{1.3}
+  - \newcommand{\R}{{\textsf{R}}}
+  - \usepackage{graphics,color,graphicx}
+  - \usepackage{url}
+  - \usepackage{tabularx}
+  - \usepackage{cancel}
+  - \definecolor{shadecolor}{RGB}{225, 225, 225}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+set.seed(4000)  # fixed seed so all results are reproducible
+```
+
+# Introduction
+
+<!-- Summary of the project topic, relevant literature review, purpose and motivation.
+     Suggested sources: Chib and Greenberg (1995); Rizzo (2019), Chapter 11.
+     Objectives:
+       1. Implement Metropolis-Hastings in R and study how proposal distribution, step size,
+          starting value, iterations and burn-in affect acceptance rate and accuracy.
+       2. Apply the sampler to a real environmental dataset (PWQMN 2025 total phosphorus). -->
+
+
+# Methods
+
+## Markov Chain Monte Carlo and the Metropolis-Hastings Algorithm
+
+<!-- Markov chains, target vs. proposal distributions, acceptance probability,
+     accept-reject step, random walk variant, assumptions. -->
+
+## Simulation Study
+
+<!-- Target distributions (normal, gamma, lognormal); factors varied; number of repeated runs;
+     performance measures (acceptance rate, estimation accuracy, autocorrelation, effective
+     sample size, Monte Carlo standard error, computation time). -->
+
+## Environmental Application
+
+<!-- PWQMN 2025 dataset, data cleaning, candidate distributions fitted, choice of target. -->
+
+
+# Results
+
+## Simulation Study Results
+
+<!-- Tables and figures from the simulation study. -->
+
+## Environmental Application Results
+
+<!-- Fitted distributions, sampler output, diagnostics, exceedance probabilities. -->
+
+<!-- Figures and tables: see Report_template.Rmd for example R chunks. Refer to them in the text with Figure \ref{label} and Table \ref{label}. -->
+
+
+# Conclusion
+
+<!-- Summarize results; discuss limitations and possible further work. -->
+
+
+# References
+
+Chib, S., & Greenberg, E. (1995). Understanding the Metropolis-Hastings algorithm. *The American Statistician*, 49(4), 327-335.
+
+Rizzo, M. L. (2019). *Statistical Computing with R* (2nd ed.). CRC Press.
+
+Ontario Ministry of the Environment, Conservation and Parks. Provincial (Stream) Water Quality Monitoring Network (PWQMN) 2025 data. 
+
+<!-- Add further references above. Also include a detailed summary of how generative AI was used in this project. -->
+
+**Use of generative AI:** *(describe here)*
+
+
+\newpage
+
+# Appendix I
+
+<!-- Additional figures and tables. -->
+
+
+# Appendix II: All code for this report
+
+```{r ref.label=knitr::all_labels(), echo=TRUE, eval=FALSE}
+```

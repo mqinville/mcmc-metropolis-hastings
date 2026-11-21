@@ -1,0 +1,35 @@
+Package: mhwater
+Title: Metropolis-Hastings Sampling with an Ontario Water-Quality
+    Application
+Version: 0.1.0
+Authors@R: c(
+    person("Felix", "Mainville", , "fmainvil@uoguelph.ca", role = c("aut", "cre")),
+    person("Matthew", "Kai Kai", , "mkaikai@uoguelph.ca", role = "aut")
+  )
+Description: Tools for the STAT*4000 Metropolis-Hastings project: a
+    hand-written Metropolis-Hastings sampler, cleaning of Ontario
+    Provincial (Stream) Water Quality Monitoring Network (PWQMN) total
+    phosphorus data, and maximum-likelihood comparison of candidate
+    distributions used as the sampler target.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.1
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+Imports: 
+    dplyr,
+    fitdistrplus,
+    ggplot2,
+    graphics,
+    grDevices,
+    readr,
+    rlang,
+    stats,
+    tibble,
+    tidyr,
+    utils
+Depends: 
+    R (>= 4.1.0)
+LazyData: true

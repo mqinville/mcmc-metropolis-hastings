@@ -1,0 +1,5 @@
+step,n_rows
+Raw file (all analytes),120441
+Total phosphorus rows,3764
+After removing duplicate rows,3690
+Final clean TP samples,3690
