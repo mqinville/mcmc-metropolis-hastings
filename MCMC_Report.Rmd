@@ -88,7 +88,9 @@ Ontario Ministry of the Environment, Conservation and Parks. Provincial (Stream)
 
 <!-- Add further references above. Also include a detailed summary of how generative AI was used in this project. -->
 
-**Use of generative AI:** *(describe here)*
+**Use of generative AI:** Claude (Anthropic, Claude Opus 5.5) was used on November 21, 2026 to clean the environmental dataset. All AI-generated code and output were reviewed by the authors, who remain responsible for the content of this report.
+
+- *Data cleaning.* Claude wrote R code to import the PWQMN 2025 CSV and extract the total phosphorus records. The code reads the file with Latin-1 encoding, removes 74 duplicated rows (identical site, date, time, laboratory sample ID and result), and replaces the 20 below-detection-limit results (recorded as `<0.2`) with half the detection limit. Samples carrying laboratory remark codes are flagged but kept. This left 3,690 samples from 449 sites.
 
 
 \newpage

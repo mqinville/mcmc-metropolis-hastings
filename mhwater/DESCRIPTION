@@ -14,7 +14,6 @@ Description: Tools for the STAT*4000 Metropolis-Hastings project: a
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.1
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
@@ -33,3 +32,4 @@ Imports:
 Depends: 
     R (>= 4.1.0)
 LazyData: true
+Config/roxygen2/version: 8.1.0

@@ -27,12 +27,18 @@ devtools::check()      # full R CMD check
 | `compare_fits()` | AIC/BIC, KS/CvM/AD, exceedance probabilities, quantiles |
 | `exceed_prob()` | P(X > threshold) under a fitted distribution |
 | `make_target()` | Turn a fit into an MH target (density, log-density, true P(X > 30)) |
+| `mh_sampler()` | Random-walk Metropolis-Hastings sampler (normal proposal); returns chain + acceptance rate |
 | `plot_fit_diagnostics()` | 4-panel plot: exceedance curve, Q-Q, CDF, P-P |
 | `plot_log_density()` | Fitted densities on the log10 scale |
 | `censoring_check()`, `site_median_check()` | Sensitivity checks |
 | `tp_clean` | Cleaned dataset (3,690 samples, 449 sites) |
 
-`R/mh_sampler.R` holds a template for the Metropolis-Hastings sampler.
+Running the sampler on the lognormal target (`tgt` from the quick example below):
+
+```r
+chain <- mh_sampler(tgt$log_density, 10000, x0 = 10, proposal_sd = 20)
+mean(chain$x[-(1:1000)] > 30)
+```
 
 ## Reproducing the environmental analysis
 

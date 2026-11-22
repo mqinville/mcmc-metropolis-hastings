@@ -13,6 +13,7 @@ Tools for the STAT*4000 Metropolis-Hastings project: a hand-written Metropolis-H
 
 Authors:
 \itemize{
+  \item Felix Mainville \email{fmainvil@uoguelph.ca}
   \item Matthew Kai Kai \email{mkaikai@uoguelph.ca}
 }
 
