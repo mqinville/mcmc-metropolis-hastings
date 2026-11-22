@@ -27,7 +27,8 @@ devtools::check()      # full R CMD check
 | `compare_fits()` | AIC/BIC, KS/CvM/AD, exceedance probabilities, quantiles |
 | `exceed_prob()` | P(X > threshold) under a fitted distribution |
 | `make_target()` | Turn a fit into an MH target (density, log-density, true P(X > 30)) |
-| `mh_sampler()` | Random-walk Metropolis-Hastings sampler (normal proposal); returns chain + acceptance rate |
+| `mh_sampler()` | Metropolis-Hastings sampler with a pluggable proposal; returns chain, acceptance rate, proposal name |
+| `normal_rw()`, `lognormal_rw()`, `gamma_independence()` | Proposals for `mh_sampler()`: normal random walk, multiplicative (log-scale) random walk, gamma independence sampler |
 | `plot_fit_diagnostics()` | 4-panel plot: exceedance curve, Q-Q, CDF, P-P |
 | `plot_log_density()` | Fitted densities on the log10 scale |
 | `censoring_check()`, `site_median_check()` | Sensitivity checks |
@@ -36,7 +37,7 @@ devtools::check()      # full R CMD check
 Running the sampler on the lognormal target (`tgt` from the quick example below):
 
 ```r
-chain <- mh_sampler(tgt$log_density, 10000, x0 = 10, proposal_sd = 20)
+chain <- mh_sampler(tgt$log_density, 10000, x0 = 10, proposal = normal_rw(20))
 mean(chain$x[-(1:1000)] > 30)
 ```
 

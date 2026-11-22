@@ -6,8 +6,11 @@ export(compare_fits)
 export(describe_tp)
 export(exceed_prob)
 export(fit_candidates)
+export(gamma_independence)
+export(lognormal_rw)
 export(make_target)
 export(mh_sampler)
+export(normal_rw)
 export(plot_fit_diagnostics)
 export(plot_log_density)
 export(read_pwqmn)
@@ -66,8 +69,13 @@ importFrom(readr,
 )
 importFrom(rlang,.data)
 importFrom(stats,
+  dgamma,
+  dlnorm,
+  dnorm,
   median,
   quantile,
+  rgamma,
+  rlnorm,
   rnorm,
   runif,
   sd

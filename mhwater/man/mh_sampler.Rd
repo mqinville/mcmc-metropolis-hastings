@@ -2,45 +2,73 @@
 % Please edit documentation in R/mh_sampler.R
 \name{mh_sampler}
 \alias{mh_sampler}
-\title{Random-walk Metropolis-Hastings sampler}
+\title{Metropolis-Hastings sampler}
 \usage{
-mh_sampler(log_target, n_iter, x0, proposal_sd)
+mh_sampler(log_target, n_iter, x0, proposal)
 }
 \arguments{
 \item{log_target}{function of one number returning the log target density
 (e.g. \code{make_target(fit)$log_density}). It may return \code{-Inf} outside the
-support; such proposals are always rejected.}
+support.}
 
 \item{n_iter}{total chain length, \strong{including} the starting value (so
-\code{x[1] == x0}). Must be at least 2.}
+\code{x[1] == x0}). A single whole number, at least 2.}
 
 \item{x0}{starting value; \code{log_target(x0)} must be finite.}
 
-\item{proposal_sd}{standard deviation of the normal proposal (step size),
-must be > 0.}
+\item{proposal}{the proposal distribution: a list with functions
+\code{draw(x)} (one candidate given the current state \code{x}) and
+\code{log_q(to, from)} (log density of proposing \code{to} from \code{from}), as
+returned by \code{\link[=normal_rw]{normal_rw()}}, \code{\link[=lognormal_rw]{lognormal_rw()}} or \code{\link[=gamma_independence]{gamma_independence()}}.}
 }
 \value{
 A list with elements \code{x} (numeric vector of length \code{n_iter}, the
-chain) and \code{accept_rate} (proportion of the \code{n_iter - 1} proposals that
-were accepted).
+chain), \code{accept_rate} (proportion of the \code{n_iter - 1} candidates that
+were accepted) and \code{proposal} (the proposal's \code{name}, or
+\code{"custom proposal"} if it has none).
 }
 \description{
-Draws a Markov chain whose stationary distribution is the target density.
-At each step a proposal \code{y ~ Normal(current, proposal_sd)} is drawn. The
-normal proposal is symmetric, so the Hastings ratio reduces to
-\code{target(y) / target(current)}. The ratio is computed on the log scale to
-avoid underflow for tiny densities. When a proposal is rejected the chain
-stays at its current value.
+Draws a Markov chain whose stationary distribution is the target density
+\eqn{f}. At each step a candidate \eqn{Y} is drawn from the proposal
+\eqn{g(\cdot \mid X_t)} and accepted with probability
+\eqn{\min(1, \alpha)}, where (Rizzo 2019, Section 11.2.1, eq. 11.3)
+\deqn{\alpha = \frac{f(Y)\, g(X_t \mid Y)}{f(X_t)\, g(Y \mid X_t)}.}
+When the candidate is rejected the chain stays at \eqn{X_t}.
+}
+\details{
+The ratio is computed on the log scale to avoid underflow for tiny
+densities:
+\verb{log_alpha = (log f(Y) - log f(X_t)) + (log g(X_t | Y) - log g(Y | X_t))},
+and \eqn{Y} is accepted if \code{log(U) <= log_alpha} with
+\eqn{U \sim Uniform(0, 1)}. For a symmetric proposal such as
+\code{\link[=normal_rw]{normal_rw()}}, \eqn{g(X_t \mid Y) = g(Y \mid X_t)}, so the correction term
+cancels and this is the random walk Metropolis sampler (Rizzo 2019,
+Sections 11.2.2-11.2.3). Asymmetric proposals (\code{\link[=lognormal_rw]{lognormal_rw()}}) and
+independence proposals (\code{\link[=gamma_independence]{gamma_independence()}}) rely on the correction.
+
+Candidates where \code{log_target} is \code{-Inf}, \code{NA} or \code{NaN} (e.g. outside the
+support) are always rejected.
 }
 \examples{
 set.seed(1)
 chain <- mh_sampler(function(x) dnorm(x, log = TRUE),
-                    n_iter = 5000, x0 = 0, proposal_sd = 2.4)
+                    n_iter = 5000, x0 = 0, proposal = normal_rw(2.4))
 chain$accept_rate
 mean(chain$x[-(1:500)])        # close to 0
 
 fits <- fit_candidates(tp_clean$value)
 tgt  <- make_target(fits$lnorm, threshold = 30)
-chain <- mh_sampler(tgt$log_density, n_iter = 10000, x0 = 10, proposal_sd = 20)
+chain <- mh_sampler(tgt$log_density, n_iter = 10000, x0 = 10,
+                    proposal = normal_rw(20))
 mean(chain$x[-(1:1000)] > tgt$threshold)   # compare with tgt$p_exceed
+
+# Multiplicative random walk: suits the heavy right tail of the lognormal
+chain <- mh_sampler(tgt$log_density, n_iter = 10000, x0 = 10,
+                    proposal = lognormal_rw(1.5))
+chain$accept_rate
+mean(chain$x[-(1:1000)] > tgt$threshold)
+}
+\references{
+Rizzo, M. L. (2019). \emph{Statistical Computing with R} (2nd ed.),
+Chapter 11. Chapman & Hall/CRC.
 }
