@@ -13,7 +13,8 @@ make_target(fit, threshold = 30)
 }
 \value{
 A list with elements \code{family}, \code{params} (named numeric),
-\code{density} (function of x), \code{log_density} (function of x),
+\code{density} (function of x, the raw-scale target to pass to
+\code{\link[=mh_sampler]{mh_sampler()}}), \code{log_density} (function of x),
 \code{threshold} and \code{p_exceed}.
 }
 \description{

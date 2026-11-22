@@ -122,7 +122,8 @@ compare_fits <- function(fits, threshold = 30, probs = c(0.5, 0.9, 0.99)) {
 #' @param threshold guideline value for exceedance. Default 30.
 #'
 #' @returns A list with elements `family`, `params` (named numeric),
-#'   `density` (function of x), `log_density` (function of x),
+#'   `density` (function of x, the raw-scale target to pass to
+#'   [mh_sampler()]), `log_density` (function of x),
 #'   `threshold` and `p_exceed`.
 #' @examples
 #' fit <- fitdistrplus::fitdist(rlnorm(200, 2.6, 1.4), "lnorm")

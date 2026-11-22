@@ -4,8 +4,8 @@
 #' [mh_sampler()]. Each returns a list of class `"mh_proposal"` with
 #' elements:
 #' * `draw(x)`: draws one candidate \eqn{Y} given the current state `x`;
-#' * `log_q(to, from)`: log density of proposing `to` when the chain is at
-#'   `from`, i.e. \eqn{\log g(to \mid from)};
+#' * `q(to, from)`: density of proposing `to` when the chain is at `from`,
+#'   i.e. \eqn{g(to \mid from)};
 #' * `name`: a label such as `"normal_rw(sd = 2)"` for plots and tables.
 #'
 #' * `normal_rw(sd)`: symmetric random walk \eqn{Y \sim N(X_t, sd^2)}. The
@@ -20,21 +20,21 @@
 #'   (Rizzo 2019, Section 11.2.4). Positive targets only; works best when the
 #'   gamma is close to the target with tails at least as heavy.
 #'
-#' Any list with functions `draw` and `log_q` (and optionally `name`) can be
+#' Any list with functions `draw` and `q` (and optionally `name`) can be
 #' passed to [mh_sampler()] as a custom proposal.
 #'
 #' @param sd standard deviation of the step (on the log scale for
 #'   `lognormal_rw()`). Must be > 0.
 #' @param shape,rate gamma shape and rate. Both must be > 0.
 #'
-#' @returns A list of class `"mh_proposal"` with elements `draw`, `log_q`
+#' @returns A list of class `"mh_proposal"` with elements `draw`, `q`
 #'   and `name`.
 #' @importFrom stats rnorm dnorm rlnorm dlnorm rgamma dgamma
 #' @examples
 #' p <- normal_rw(2)
 #' p$name
 #' p$draw(0)
-#' p$log_q(1, 0)
+#' p$q(1, 0)
 #'
 #' lognormal_rw(0.5)$draw(10)        # always positive
 #' gamma_independence(2, 0.5)$draw(10)  # ignores the current state
@@ -48,8 +48,7 @@ normal_rw <- function(sd) {
   structure(
     list(
       draw  = function(x) stats::rnorm(1, mean = x, sd = sd),
-      log_q = function(to, from) stats::dnorm(to, mean = from, sd = sd,
-                                              log = TRUE),
+      q     = function(to, from) stats::dnorm(to, mean = from, sd = sd),
       name  = sprintf("normal_rw(sd = %g)", sd)
     ),
     class = "mh_proposal"
@@ -63,11 +62,13 @@ lognormal_rw <- function(sd) {
   structure(
     list(
       draw  = function(x) {
-        if (x <= 0) stop("lognormal_rw() needs a positive current state.")
+        if (x <= 0) {
+          stop("lognormal_rw() needs a positive current state.")
+        }
         stats::rlnorm(1, meanlog = log(x), sdlog = sd)
       },
-      log_q = function(to, from) stats::dlnorm(to, meanlog = log(from),
-                                               sdlog = sd, log = TRUE),
+      q     = function(to, from) stats::dlnorm(to, meanlog = log(from),
+                                               sdlog = sd),
       name  = sprintf("lognormal_rw(sd = %g)", sd)
     ),
     class = "mh_proposal"
@@ -82,8 +83,7 @@ gamma_independence <- function(shape, rate) {
   structure(
     list(
       draw  = function(x) stats::rgamma(1, shape = shape, rate = rate),
-      log_q = function(to, from) stats::dgamma(to, shape = shape, rate = rate,
-                                               log = TRUE),
+      q     = function(to, from) stats::dgamma(to, shape = shape, rate = rate),
       name  = sprintf("gamma_independence(shape = %g, rate = %g)",
                       shape, rate)
     ),

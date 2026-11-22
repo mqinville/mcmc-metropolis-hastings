@@ -37,7 +37,7 @@ devtools::check()      # full R CMD check
 Running the sampler on the lognormal target (`tgt` from the quick example below):
 
 ```r
-chain <- mh_sampler(tgt$log_density, 10000, x0 = 10, proposal = normal_rw(20))
+chain <- mh_sampler(tgt$density, 10000, x0 = 10, proposal = normal_rw(20))
 mean(chain$x[-(1:1000)] > 30)
 ```
 
@@ -56,6 +56,6 @@ library(mhwater)
 fits <- fit_candidates(tp_clean$value)
 compare_fits(fits, threshold = 30)
 tgt <- make_target(fits$lnorm)
-tgt$log_density(10)   # pass this to the MH sampler
+tgt$density(10)       # pass tgt$density to the MH sampler
 tgt$p_exceed          # exact answer the MH estimate should reproduce
 ```

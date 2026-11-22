@@ -20,7 +20,7 @@ gamma_independence(shape, rate)
 \item{shape, rate}{gamma shape and rate. Both must be > 0.}
 }
 \value{
-A list of class \code{"mh_proposal"} with elements \code{draw}, \code{log_q}
+A list of class \code{"mh_proposal"} with elements \code{draw}, \code{q}
 and \code{name}.
 }
 \description{
@@ -29,8 +29,8 @@ Constructors for the proposal distribution \eqn{g(\cdot \mid X_t)} used by
 elements:
 \itemize{
 \item \code{draw(x)}: draws one candidate \eqn{Y} given the current state \code{x};
-\item \code{log_q(to, from)}: log density of proposing \code{to} when the chain is at
-\code{from}, i.e. \eqn{\log g(to \mid from)};
+\item \code{q(to, from)}: density of proposing \code{to} when the chain is at \code{from},
+i.e. \eqn{g(to \mid from)};
 \item \code{name}: a label such as \code{"normal_rw(sd = 2)"} for plots and tables.
 }
 }
@@ -49,14 +49,14 @@ symmetric, so it relies on the Hastings correction.
 gamma is close to the target with tails at least as heavy.
 }
 
-Any list with functions \code{draw} and \code{log_q} (and optionally \code{name}) can be
+Any list with functions \code{draw} and \code{q} (and optionally \code{name}) can be
 passed to \code{\link[=mh_sampler]{mh_sampler()}} as a custom proposal.
 }
 \examples{
 p <- normal_rw(2)
 p$name
 p$draw(0)
-p$log_q(1, 0)
+p$q(1, 0)
 
 lognormal_rw(0.5)$draw(10)        # always positive
 gamma_independence(2, 0.5)$draw(10)  # ignores the current state
